@@ -1,0 +1,12 @@
+# личные и временные файлы
+*.bak
+*.log
+*.backup-*
+*.removed-*
+settings.backup*.json
+Thumbs.db
+desktop.ini
+# обои не публикуем (чужой рисунок), каждый ставит свои
+wallpapers/
+*.jpg
+*.jpeg

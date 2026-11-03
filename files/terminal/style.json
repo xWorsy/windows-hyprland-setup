@@ -1,0 +1,45 @@
+{
+  "compatibility.enableUnfocusedAcrylic": true,
+  "theme": "Night Arch",
+  "defaults": {
+    "opacity": 65,
+    "useAcrylic": true,
+    "colorScheme": "Night Arch",
+    "font": { "face": "Cascadia Code", "size": 12 },
+    "padding": "12",
+    "cursorShape": "bar"
+  },
+  "scheme": {
+    "name": "Night Arch",
+    "background": "#1A1B26",
+    "foreground": "#C0CAF5",
+    "cursorColor": "#7AA2F7",
+    "selectionBackground": "#33467C",
+    "black": "#15161E",
+    "red": "#F7768E",
+    "green": "#9ECE6A",
+    "yellow": "#E0AF68",
+    "blue": "#7AA2F7",
+    "purple": "#BB9AF7",
+    "cyan": "#7DCFFF",
+    "white": "#A9B1D6",
+    "brightBlack": "#414868",
+    "brightRed": "#F7768E",
+    "brightGreen": "#9ECE6A",
+    "brightYellow": "#E0AF68",
+    "brightBlue": "#7AA2F7",
+    "brightPurple": "#BB9AF7",
+    "brightCyan": "#7DCFFF",
+    "brightWhite": "#C0CAF5"
+  },
+  "windowTheme": {
+    "name": "Night Arch",
+    "window": { "applicationTheme": "dark", "useMica": false },
+    "tabRow": { "background": "#16161EFF", "unfocusedBackground": "#16161EFF" },
+    "tab": {
+      "background": "#1A1B26FF",
+      "unfocusedBackground": "#16161EFF",
+      "showCloseButton": "hover"
+    }
+  }
+}

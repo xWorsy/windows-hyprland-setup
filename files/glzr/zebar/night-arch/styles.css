@@ -1,0 +1,188 @@
+/* Night Arch top bar: same palette as the Windows Terminal scheme. */
+@import 'https://www.nerdfonts.com/assets/css/webfont.css';
+
+:root {
+  --bg: rgb(15 22 17 / 80%);
+  --chip: rgb(255 255 255 / 6%);
+  --border: rgb(181 228 140 / 22%);
+  --text: #e8f0dc;
+  --dim: #8fa68b;
+  --accent: #b5e48c;
+  --gold: #d4a72c;
+  --green: #3d6b44;
+  --red: #f7768e;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 13px;
+}
+
+div,
+span,
+p {
+  cursor: default;
+  user-select: none;
+}
+
+i {
+  margin-right: 7px;
+  font-size: 14px;
+  color: var(--accent);
+}
+
+.app {
+  box-sizing: border-box;
+  height: calc(100% - 10px);
+  margin: 6px 12px 4px;
+  padding: 0 10px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.left,
+.right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.right {
+  justify-self: end;
+}
+
+.logo-btn {
+  width: 30px;
+  height: 26px;
+  margin: 0 8px 0 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 13px;
+  background: linear-gradient(135deg, #b5e48c, #d4a72c);
+  cursor: pointer;
+  transition:
+    transform 0.12s,
+    box-shadow 0.12s;
+}
+
+.logo-btn i {
+  margin: 0;
+  font-size: 14px;
+  color: #10150f;
+}
+
+.logo-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 12px rgb(181 228 140 / 55%);
+}
+
+.logo-btn:active {
+  transform: scale(0.94);
+}
+
+.workspaces {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.workspace {
+  min-width: 26px;
+  height: 24px;
+  padding: 0 8px;
+  border: none;
+  border-radius: 12px;
+  background: var(--chip);
+  color: var(--dim);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+
+  &.displayed {
+    color: var(--text);
+    background: rgb(255 255 255 / 12%);
+  }
+
+  &:hover {
+    color: var(--text);
+    background: rgb(181 228 140 / 28%);
+  }
+
+  &.focused {
+    color: #10150f;
+    background: var(--accent);
+    font-weight: 600;
+  }
+}
+
+.clock {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.clock .time {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.clock .date {
+  color: var(--dim);
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 12px;
+  background: var(--chip);
+}
+
+.chip i {
+  margin-right: 6px;
+}
+
+button.chip {
+  border: none;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+button.chip i {
+  margin: 0;
+}
+
+button.chip:hover {
+  background: rgb(181 228 140 / 28%);
+}
+
+.chip.warn,
+.chip.warn i {
+  color: var(--red);
+}
+
+.chip.mode {
+  background: var(--gold);
+  color: #10150f;
+  font-weight: 600;
+}

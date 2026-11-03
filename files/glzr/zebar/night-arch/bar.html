@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Custom styles. -->
+    <link rel="stylesheet" type="text/css" href="./styles.css" />
+
+    <!-- Allows React to be run buildless via "text/babel" script below. -->
+    <script
+      src="https://unpkg.com/@babel/standalone@7.25.6/babel.min.js"
+      integrity="sha256-aS0B0wnsaDByLfE16h4MDCP1fQFccysd1YWOcV+gbBo="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel" data-type="module">
+      import React, {
+        useState,
+        useEffect,
+      } from 'https://esm.sh/react@18?dev';
+      import { createRoot } from 'https://esm.sh/react-dom@18/client?dev';
+      import * as zebar from 'https://esm.sh/zebar@3.0';
+
+      const providers = zebar.createProviderGroup({
+        network: { type: 'network' },
+        glazewm: { type: 'glazewm' },
+        cpu: { type: 'cpu' },
+        time: { type: 'date', formatting: 'HH:mm' },
+        day: { type: 'date', formatting: 'EEE, d MMM' },
+        memory: { type: 'memory' },
+        weather: { type: 'weather' },
+      });
+
+      createRoot(document.getElementById('root')).render(<App />);
+
+      function App() {
+        const [output, setOutput] = useState(providers.outputMap);
+
+        useEffect(() => {
+          providers.onOutput(() => setOutput(providers.outputMap));
+        }, []);
+
+        // Get icon to show for current network status.
+        function getNetworkIcon(networkOutput) {
+          switch (networkOutput.defaultInterface?.type) {
+            case 'ethernet':
+              return <i className="nf nf-md-ethernet_cable"></i>;
+            case 'proprietary_virtual':
+              return <i className="nf nf-md-shield_lock_outline"></i>;
+            case 'wifi':
+              return <i className="nf nf-md-wifi_strength_4"></i>;
+            default:
+              return (
+                <i className="nf nf-md-wifi_strength_off_outline"></i>
+              );
+          }
+        }
+
+        // Get icon to show for current weather status.
+        function getWeatherIcon(weatherOutput) {
+          switch (weatherOutput.status) {
+            case 'clear_day':
+              return <i className="nf nf-weather-day_sunny"></i>;
+            case 'clear_night':
+              return <i className="nf nf-weather-night_clear"></i>;
+            case 'cloudy_day':
+              return <i className="nf nf-weather-day_cloudy"></i>;
+            case 'cloudy_night':
+              return <i className="nf nf-weather-night_alt_cloudy"></i>;
+            case 'light_rain_day':
+              return <i className="nf nf-weather-day_sprinkle"></i>;
+            case 'light_rain_night':
+              return <i className="nf nf-weather-night_alt_sprinkle"></i>;
+            case 'heavy_rain_day':
+              return <i className="nf nf-weather-day_rain"></i>;
+            case 'heavy_rain_night':
+              return <i className="nf nf-weather-night_alt_rain"></i>;
+            case 'snow_day':
+              return <i className="nf nf-weather-day_snow"></i>;
+            case 'snow_night':
+              return <i className="nf nf-weather-night_alt_snow"></i>;
+            case 'thunder_day':
+              return <i className="nf nf-weather-day_lightning"></i>;
+            case 'thunder_night':
+              return <i className="nf nf-weather-night_alt_lightning"></i>;
+            default:
+              return <i className="nf nf-weather-day_cloudy"></i>;
+          }
+        }
+
+        return (
+          <div className="app">
+            <div className="left">
+              <button
+                className="logo-btn"
+                title="Пуск"
+                onClick={() =>
+                  output.glazewm?.runCommand(
+                    'shell-exec wscript {{GLZR_FWD}}/start-menu.vbs',
+                  )
+                }
+              >
+                <i className="nf nf-fa-windows"></i>
+              </button>
+              {output.glazewm && (
+                <div className="workspaces">
+                  {output.glazewm.currentWorkspaces.map(workspace => (
+                    <button
+                      className={`workspace ${workspace.hasFocus ? 'focused' : ''} ${workspace.isDisplayed ? 'displayed' : ''}`}
+                      onClick={() =>
+                        output.glazewm.runCommand(
+                          `focus --workspace ${workspace.name}`,
+                        )
+                      }
+                      key={workspace.name}
+                    >
+                      {workspace.displayName ?? workspace.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="clock">
+              <span className="time">{output.time?.formatted}</span>
+              <span className="date">{output.day?.formatted}</span>
+            </div>
+
+            <div className="right">
+              {output.glazewm && (
+                <>
+                  {output.glazewm.isPaused && (
+                    <button
+                      className="chip warn"
+                      onClick={() =>
+                        output.glazewm.runCommand('wm-toggle-pause')
+                      }
+                    >
+                      PAUSED
+                    </button>
+                  )}
+                  {output.glazewm.bindingModes.map(bindingMode => (
+                    <button
+                      className="chip mode"
+                      key={bindingMode.name}
+                      onClick={() =>
+                        output.glazewm.runCommand(
+                          `wm-disable-binding-mode --name ${bindingMode.name}`,
+                        )
+                      }
+                    >
+                      {bindingMode.displayName ?? bindingMode.name}
+                    </button>
+                  ))}
+
+                  <button
+                    className="chip"
+                    onClick={() =>
+                      output.glazewm.runCommand('toggle-tiling-direction')
+                    }
+                  >
+                    <i
+                      className={`nf ${
+                        output.glazewm.tilingDirection === 'horizontal'
+                          ? 'nf-md-swap_horizontal'
+                          : 'nf-md-swap_vertical'
+                      }`}
+                    ></i>
+                  </button>
+                </>
+              )}
+
+              {output.network && (
+                <div className="chip">
+                  {getNetworkIcon(output.network)}
+                  {output.network.defaultGateway?.ssid}
+                </div>
+              )}
+
+              {output.memory && (
+                <div className="chip">
+                  <i className="nf nf-fae-chip"></i>
+                  {Math.round(output.memory.usage)}%
+                </div>
+              )}
+
+              {output.cpu && (
+                <div
+                  className={`chip ${output.cpu.usage > 85 ? 'warn' : ''}`}
+                >
+                  <i className="nf nf-oct-cpu"></i>
+                  {Math.round(output.cpu.usage)}%
+                </div>
+              )}
+
+              {output.weather && (
+                <div className="chip">
+                  {getWeatherIcon(output.weather)}
+                  {Math.round(output.weather.celsiusTemp)}°C
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      }
+    </script>
+  </body>
+</html>
