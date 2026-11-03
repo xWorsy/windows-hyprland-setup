@@ -24,14 +24,17 @@
 
 1. Скачай репозиторий: зелёная кнопка **Code → Download ZIP**, распакуй в любую папку
    (или `git clone https://github.com/xWorsy/windows-hyprland-setup.git`).
-2. Открой в этой папке PowerShell (в проводнике: правая кнопка → «Открыть в Терминале»).
-3. Выполни:
+   Лучше перед распаковкой: правая кнопка по скачанному ZIP → «Свойства» → галочка «Разблокировать» → ОК
+   (иначе Windows может ругаться на файлы из интернета).
+2. Дважды щёлкни по **`install.cmd`** (не по `install.ps1`: тот по двойному клику откроется как текст в Блокноте).
+   Если Windows пишет «Windows защитила ваш компьютер», нажми «Подробнее» → «Выполнить в любом случае».
+   Запуск из PowerShell вместо этого:
 
    ```powershell
    powershell -ExecutionPolicy Bypass -File .\install.ps1
    ```
 
-4. Скрипт задаст пару вопросов (запускать GlazeWM при входе в Windows? прятать панель задач?), потом:
+3. Скрипт задаст пару вопросов (запускать GlazeWM при входе в Windows? прятать панель задач?), потом:
    поставит GlazeWM и Zebar (появится окно «Разрешить внесение изменений», нажми «Да»), скопирует настройки,
    оформит терминал и запустит GlazeWM. Окна сразу перестроятся плитками, это нормально.
 
@@ -98,9 +101,7 @@ powershell -NoProfile -File "$env:USERPROFILE\.glzr\taskbar.ps1" show
 
 ## Удаление
 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\uninstall.ps1
-```
+Дважды щёлкни по **`uninstall.cmd`** (или из PowerShell: `powershell -ExecutionPolicy Bypass -File .\uninstall.ps1`).
 
 Скрипт по шагам, с вопросами: остановит GlazeWM и Zebar, вернёт панель задач, уберёт автозапуск, вернёт твои
 прежние настройки GlazeWM и терминала, а на вопрос «удалить программы?» удалит GlazeWM и Zebar.
